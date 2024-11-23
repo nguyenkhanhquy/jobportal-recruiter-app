@@ -9,7 +9,8 @@
         "web": "expo start --web"
     },
     "dependencies": {
-        "expo": "~51.0.36",
+        "axios": "^1.7.7",
+        "expo": "~51.0.39",
         "expo-secure-store": "^13.0.2",
         "expo-status-bar": "~1.12.1",
         "nativewind": "^2.0.11",
