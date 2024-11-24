@@ -10,9 +10,10 @@ import logo from "../../assets/img/logo.png";
 const Intro = ({ navigation }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigation.replace("Home", {
-                screen: "HomeTab",
-            });
+            // navigation.replace("Home", {
+            //     screen: "HomeTab",
+            // });
+            navigation.replace("Login");
         }, 2000);
 
         return () => clearTimeout(timer);

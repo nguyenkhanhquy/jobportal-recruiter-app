@@ -4,6 +4,7 @@ import React from "react";
 // import Toast from "react-native-toast-message";
 
 import Intro from "../../screens/intro/Intro";
+import Login from "../../screens/auth/Login";
 import MainTabNavigator from "../MainTabNavigator/MainTabNavigator";
 
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ const AppNavigator = () => {
                 }}
             >
                 <Stack.Screen name="Intro" component={Intro} />
+                <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Home" component={MainTabNavigator} />
             </Stack.Navigator>
             {/* <Toast /> */}
