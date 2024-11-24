@@ -250,7 +250,7 @@ const AccountTab = ({ navigation }) => {
                         <TouchableOpacity
                             className="bg-white p-3 rounded-lg mb-4"
                             style={styles.shadowStyle}
-                            onPress={() => navigation.navigate("Profile", { user: userInfo })}
+                            onPress={() => navigation.navigate("Profile")}
                         >
                             <Text className="text-lg font-medium text-gray-800">Hồ sơ nhà tuyển dụng</Text>
                         </TouchableOpacity>
