@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
 
 import HomeTab from "../../screens/home/HomeTab";
+import CreateJobTab from "../../screens/home/CreateJobPostTab";
 import AccountTab from "../../screens/home/AccountTab";
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +19,9 @@ const MainTabNavigator = () => {
                         case "HomeTab":
                             iconName = focused ? "home" : "home-outline";
                             break;
+                        case "CreateJobTab":
+                            iconName = focused ? "create" : "create-outline";
+                            break;
                         case "AccountTab":
                             iconName = focused ? "person" : "person-outline";
                             break;
@@ -29,6 +33,7 @@ const MainTabNavigator = () => {
             })}
         >
             <Tab.Screen name="HomeTab" component={HomeTab} options={{ tabBarLabel: "Trang chủ" }} />
+            <Tab.Screen name="CreateJobTab" component={CreateJobTab} options={{ tabBarLabel: "Tạo bài đăng" }} />
             <Tab.Screen name="AccountTab" component={AccountTab} options={{ tabBarLabel: "Tài Khoản" }} />
         </Tab.Navigator>
     );
