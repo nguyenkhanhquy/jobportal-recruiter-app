@@ -5,6 +5,7 @@ import React from "react";
 
 import Intro from "../../screens/intro/Intro";
 import Login from "../../screens/auth/Login";
+import ChangePassword from "../../screens/account/ChangePassword";
 import MainTabNavigator from "../MainTabNavigator/MainTabNavigator";
 
 const Stack = createStackNavigator();
@@ -22,6 +23,11 @@ const AppNavigator = () => {
                 <Stack.Screen name="Intro" component={Intro} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Home" component={MainTabNavigator} />
+                <Stack.Screen
+                    name="ChangePassword"
+                    component={ChangePassword}
+                    options={{ headerShown: true, headerTitle: "Đổi mật khẩu", headerTitleAlign: "center" }}
+                />
             </Stack.Navigator>
             {/* <Toast /> */}
         </NavigationContainer>
