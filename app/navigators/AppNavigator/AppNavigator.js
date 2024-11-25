@@ -8,6 +8,7 @@ import Login from "../../screens/auth/Login";
 import ChangePassword from "../../screens/account/ChangePassword";
 import Profile from "../../screens/account/Profile";
 import CreateJobPost from "../../screens/post/CreateJobPost";
+import JobPostDetail from "../../screens/post/JobPostDetail";
 import MainTabNavigator from "../MainTabNavigator/MainTabNavigator";
 
 const Stack = createStackNavigator();
@@ -29,6 +30,11 @@ const AppNavigator = () => {
                     name="CreateJobPost"
                     component={CreateJobPost}
                     options={{ headerShown: true, headerTitle: "Tạo bài đăng", headerTitleAlign: "center" }}
+                />
+                <Stack.Screen
+                    name="JobPostDetail"
+                    component={JobPostDetail}
+                    options={{ headerShown: true, headerTitle: "Chi tiết bài đăng", headerTitleAlign: "center" }}
                 />
                 <Stack.Screen
                     name="ChangePassword"
