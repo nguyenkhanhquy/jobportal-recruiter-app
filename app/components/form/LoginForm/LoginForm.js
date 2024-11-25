@@ -64,8 +64,6 @@ const LoginForm = ({ navigation, setLoading }) => {
     const handleLogin = async () => {
         if (!validateInputs()) return;
 
-        resetStates();
-
         try {
             setLoading(true);
             const data = await login(email, password);
@@ -74,8 +72,7 @@ const LoginForm = ({ navigation, setLoading }) => {
                     await logout(data.result.token);
                     throw new Error("Loại tài khoản không hợp lệ!");
                 }
-                setEmail("");
-                setPassword("");
+                resetStates();
                 handleLoginResponse(data);
                 navigation.navigate("Home", {
                     screen: "HomeTab",

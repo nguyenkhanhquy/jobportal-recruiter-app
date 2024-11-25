@@ -5,7 +5,7 @@ import { emailRegex } from "../../utils/regex";
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 
-// import { updateRecruiterProfile } from "../../services/recruiterService";
+import { updateProfile } from "../../services/recruiterService";
 
 const Profile = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -44,49 +44,48 @@ const Profile = ({ route, navigation }) => {
 
     const handleSave = async () => {
         if (validate()) {
-            // Thực hiện hành động lưu
-            navigation.goBack();
+            try {
+                setLoading(true);
+
+                const body = {
+                    name,
+                    position,
+                    recruiterEmail,
+                    phone,
+                    website,
+                    description,
+                    companyAddress,
+                    companyLogo: route.params.recruiter.company.logo,
+                };
+
+                const data = await updateProfile(body);
+
+                if (data.success) {
+                    showToast("success", data.message);
+                    navigation.goBack();
+                } else {
+                    throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
+                }
+            } catch (error) {
+                showToast("error", error.message);
+            } finally {
+                setLoading(false);
+            }
         }
-        // try {
-        //     setLoading(true);
-
-        //     const body = {
-        //         name,
-        //         position,
-        //         recruiterEmail,
-        //         phone,
-        //         website,
-        //         companyAddress,
-        //         description,
-        //     };
-
-        //     const data = await updateRecruiterProfile(body);
-
-        //     if (data.success) {
-        //         showToast("success", data.message);
-        //         navigation.goBack();
-        //     } else {
-        //         throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
-        //     }
-        // } catch (error) {
-        //     showToast("error", error.message);
-        // } finally {
-        //     setLoading(false);
-        // }
     };
 
-    // const showToast = (type, text1, text2) => {
-    //     Toast.show({
-    //         type: type,
-    //         text1: text1,
-    //         text2: text2,
-    //         position: "bottom",
-    //         bottomOffset: 80,
-    //         visibilityTime: 3000,
-    //         text1Style: { fontSize: 16, fontWeight: "bold" },
-    //         text2Style: { fontSize: 12 },
-    //     });
-    // };
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     return (
         <View className="flex-1 bg-gray-100">
@@ -189,6 +188,7 @@ const Profile = ({ route, navigation }) => {
                         placeholder="Tên công ty"
                         placeholderTextColor="#a0a0a0"
                         value={companyName}
+                        multiline={true}
                         editable={false}
                     />
                 </View>
