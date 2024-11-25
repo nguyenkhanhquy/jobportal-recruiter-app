@@ -15,7 +15,7 @@ const Intro = ({ navigation }) => {
                 const data = await introspect(token);
                 if (data.success) {
                     navigation.replace("Home", {
-                        screen: "HomeTab",
+                        screen: "PostListTab",
                     });
                     return;
                 } else {

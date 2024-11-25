@@ -75,7 +75,7 @@ const LoginForm = ({ navigation, setLoading }) => {
                 resetStates();
                 handleLoginResponse(data);
                 navigation.navigate("Home", {
-                    screen: "HomeTab",
+                    screen: "PostListTab",
                 });
             } else {
                 throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");

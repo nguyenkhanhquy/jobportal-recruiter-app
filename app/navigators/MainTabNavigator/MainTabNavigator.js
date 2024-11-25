@@ -2,7 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
 
-import HomeTab from "../../screens/home/HomeTab";
 import PostListTab from "../../screens/home/PostListTab";
 import AccountTab from "../../screens/home/AccountTab";
 
@@ -16,9 +15,6 @@ const MainTabNavigator = () => {
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
                     switch (route.name) {
-                        case "HomeTab":
-                            iconName = focused ? "home" : "home-outline";
-                            break;
                         case "PostListTab":
                             iconName = focused ? "list" : "list-outline";
                             break;
@@ -32,7 +28,6 @@ const MainTabNavigator = () => {
                 tabBarInactiveTintColor: "gray",
             })}
         >
-            <Tab.Screen name="HomeTab" component={HomeTab} options={{ tabBarLabel: "Trang chủ" }} />
             <Tab.Screen
                 name="PostListTab"
                 component={PostListTab}
