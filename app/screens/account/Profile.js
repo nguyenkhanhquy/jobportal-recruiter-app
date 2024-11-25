@@ -3,7 +3,7 @@ import { ActivityIndicator, Text, TextInput, View, TouchableOpacity, ScrollView 
 import { emailRegex } from "../../utils/regex";
 
 import { StatusBar } from "expo-status-bar";
-// import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 
 // import { updateRecruiterProfile } from "../../services/recruiterService";
 
@@ -11,31 +11,17 @@ const Profile = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
 
-    // // Thông tin người đại diện
-    // const [name, setName] = useState(route.params.recruiter.name);
-    // const [position, setPosition] = useState(route.params.recruiter.position);
-    // const [recruiterEmail, setRecruiterEmail] = useState(route.params.recruiter.recruiterEmail);
-    // const [phone, setPhone] = useState(route.params.recruiter.phone);
-
-    // // Thông tin công ty
-    // const [companyName] = useState(route.params.recruiter.companyName);  // Không thay đổi
-    // const [website, setWebsite] = useState(route.params.recruiter.website);
-    // const [companyAddress, setCompanyAddress] = useState(route.params.recruiter.companyAddress);
-    // const [description, setDescription] = useState(route.params.recruiter.description);
-
     // Thông tin người đại diện
-    const [name, setName] = useState("Nguyễn Khánh Quy");
-    const [position, setPosition] = useState("Trưởng phòng nhân sự");
-    const [recruiterEmail, setRecruiterEmail] = useState("nguyenkhanhquy123@gmail.com");
-    const [phone, setPhone] = useState("0987654321");
+    const [name, setName] = useState(route.params.recruiter.name);
+    const [position, setPosition] = useState(route.params.recruiter.position);
+    const [recruiterEmail, setRecruiterEmail] = useState(route.params.recruiter.recruiterEmail);
+    const [phone, setPhone] = useState(route.params.recruiter.phone);
 
     // Thông tin công ty
-    const [companyName] = useState("Trung tâm Công nghệ thông tin BIDV");
-    const [website, setWebsite] = useState("https://github.com/nguyenkhanhquy");
-    const [companyAddress, setCompanyAddress] = useState("Đường số 4, Đặng Văn Bi, TP.Thủ Đức, TP.HCM");
-    const [description, setDescription] = useState(
-        "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (BIDV) là ngân hàng hàng đầu tại Việt Nam, hoạt động kinh doanh trong nhiều lĩnh vực như: Ngân hàng, Bảo hiểm, Chứng khoán. Với hơn 25.000 cán bộ nhân viên, BIDV nhận thức được rằng nguồn nhân lực là một nhân tố quan trọng hàng đầu cho sự phát triển và thành công của tổ chức. Vì vậy, một trong những mục tiêu quan trọng nhất của BIDV là phải xây dựng, duy trì và phát triển đội ngũ nhân viên đảm bảo đủ về số lượng và chất lượng để thực hiện thắng lợi các mục tiêu, chiến lược kinh doanh của hệ thống. "
-    );
+    const [companyName] = useState(route.params.recruiter.company.name); // Không thay đổi
+    const [website, setWebsite] = useState(route.params.recruiter.company.website);
+    const [companyAddress, setCompanyAddress] = useState(route.params.recruiter.company.address);
+    const [description, setDescription] = useState(route.params.recruiter.company.description);
 
     // Lỗi
     const [errors, setErrors] = useState({});
@@ -225,6 +211,7 @@ const Profile = ({ route, navigation }) => {
                         placeholder="Nhập địa chỉ công ty"
                         placeholderTextColor="#a0a0a0"
                         value={companyAddress}
+                        multiline={true}
                         onChangeText={(value) => setCompanyAddress(value)}
                     />
                 </View>

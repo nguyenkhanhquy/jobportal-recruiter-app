@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-// import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 
 import Intro from "../../screens/intro/Intro";
 import Login from "../../screens/auth/Login";
@@ -47,7 +47,7 @@ const AppNavigator = () => {
                     options={{ headerShown: true, headerTitle: "Hồ sơ nhà tuyển dụng", headerTitleAlign: "center" }}
                 />
             </Stack.Navigator>
-            {/* <Toast /> */}
+            <Toast />
         </NavigationContainer>
     );
 };

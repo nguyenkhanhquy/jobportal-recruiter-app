@@ -3,15 +3,32 @@ import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { emailRegex } from "../../../utils/regex";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 import logo from "../../../assets/img/logo.png";
 
-const LoginForm = ({ onLoginSuccess }) => {
+import { login, logout } from "../../../services/authService";
+import { handleLoginResponse } from "../../../utils/authStorage";
+
+const LoginForm = ({ navigation, setLoading }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     const resetStates = () => {
         setEmail("");
@@ -44,13 +61,32 @@ const LoginForm = ({ onLoginSuccess }) => {
         return valid;
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (!validateInputs()) return;
 
         resetStates();
 
-        if (onLoginSuccess) {
-            onLoginSuccess(); // Callback khi đăng nhập thành công
+        try {
+            setLoading(true);
+            const data = await login(email, password);
+            if (data.success) {
+                if (data.result.role !== "RECRUITER") {
+                    await logout(data.result.token);
+                    throw new Error("Loại tài khoản không hợp lệ!");
+                }
+                setEmail("");
+                setPassword("");
+                handleLoginResponse(data);
+                navigation.navigate("Home", {
+                    screen: "HomeTab",
+                });
+            } else {
+                throw new Error(data.message || "Lỗi máy chủ, vui lòng thử lại sau!");
+            }
+        } catch (error) {
+            showToast("error", error.message);
+        } finally {
+            setLoading(false);
         }
     };
 

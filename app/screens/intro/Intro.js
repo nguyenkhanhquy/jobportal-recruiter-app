@@ -2,18 +2,31 @@ import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
-// import { introspect } from "../../services/authService";
-// import { getToken, deleteToken } from "../../utils/authStorage";
+import { introspect } from "../../services/authService";
+import { getToken, deleteToken } from "../../utils/authStorage";
 
 import logo from "../../assets/img/logo.png";
 
 const Intro = ({ navigation }) => {
     useEffect(() => {
-        const timer = setTimeout(() => {
-            // navigation.replace("Home", {
-            //     screen: "HomeTab",
-            // });
+        const checkToken = async () => {
+            const token = await getToken();
+            if (token) {
+                const data = await introspect(token);
+                if (data.success) {
+                    navigation.replace("Home", {
+                        screen: "HomeTab",
+                    });
+                    return;
+                } else {
+                    deleteToken();
+                }
+            }
             navigation.replace("Login");
+        };
+
+        const timer = setTimeout(() => {
+            checkToken();
         }, 2000);
 
         return () => clearTimeout(timer);

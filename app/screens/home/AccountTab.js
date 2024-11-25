@@ -1,157 +1,108 @@
 import React, { useCallback, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
-// import { useFocusEffect } from "@react-navigation/native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { StatusBar } from "expo-status-bar";
-// import * as ImagePicker from "expo-image-picker";
+import Toast from "react-native-toast-message";
+import OverLoading from "../../components/loaders/OverlayLoading";
 
-// import { logout } from "../../services/authService";
-// import { getAuthProfile } from "../../services/authService";
-// import { updateAvatar } from "../../services/jobSeekerService";
-
-// import { getToken, deleteToken } from "../../utils/authStorage";
+import { getAuthProfile, logout } from "../../services/authService";
+import { getToken, deleteToken } from "../../utils/authStorage";
 
 const AccountTab = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
-    const [userInfo, setUserInfo] = useState(null);
+    const [profile, setProfile] = useState(null);
 
-    // const fetchUserInfo = useCallback(async () => {
-    //     setLoading(true);
-    //     try {
-    //         const token = await getToken();
-    //         if (token) {
-    //             const data = await getAuthProfile();
-    //             if (data.success) {
-    //                 setUserInfo(data.result);
-    //             } else {
-    //                 Alert.alert("Error", data.message);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         Alert.alert("Error", "Failed to fetch user information.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }, []);
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         fetchUserInfo();
-    //     }, [])
-    // );
+    const fetchUserInfo = useCallback(async () => {
+        setLoading(true);
+        try {
+            const token = await getToken();
+            if (token) {
+                const data = await getAuthProfile();
+                if (data.success) {
+                    setProfile(data.result);
+                } else {
+                    Alert.alert("Error", data.message);
+                }
+            }
+        } catch (error) {
+            showToast("error", "Không thể lấy thông tin người dùng.");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-    // const selectImage = async () => {
-    //     // Yêu cầu quyền truy cập thư viện ảnh
-    //     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    useFocusEffect(
+        useCallback(() => {
+            fetchUserInfo();
+        }, [])
+    );
 
-    //     if (status !== "granted") {
-    //         Alert.alert("Quyền truy cập bị từ chối!", "Bạn cần cấp quyền để chọn ảnh.");
-    //         return;
-    //     }
+    const handleLogout = async () => {
+        Alert.alert(
+            "Xác nhận đăng xuất",
+            "Bạn có chắc chắn muốn đăng xuất?",
+            [
+                {
+                    text: "Hủy",
+                },
+                {
+                    text: "Đăng xuất",
+                    onPress: async () => {
+                        try {
+                            setLoading(true);
+                            const token = await getToken();
+                            if (token) {
+                                const data = await logout(token);
 
-    //     // Mở thư viện ảnh
-    //     const result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //         allowsEditing: true, // Cho phép chỉnh sửa hình ảnh
-    //         aspect: [1, 1], // Cắt ảnh theo tỷ lệ 1:1 (hình vuông)
-    //         quality: 1, // Chất lượng hình ảnh (từ 0 đến 1)
-    //     });
-
-    //     // Nếu người dùng không hủy chọn ảnh
-    //     if (!result.canceled) {
-    //         const selectedImage = result.assets[0];
-    //         const { uri } = selectedImage;
-    //         const fileName = uri.split("/").pop(); // Lấy tên tệp từ đường dẫn uri
-
-    //         const fileExtension = uri.split(".").pop().toLowerCase();
-    //         const type = `image/${fileExtension}`;
-
-    //         // Tạo đối tượng file
-    //         const avatar = {
-    //             uri,
-    //             type: type || "image/jpeg",
-    //             name: fileName,
-    //         };
-
-    //         try {
-    //             setLoading(true);
-    //             const data = await updateAvatar(avatar);
-    //             if (data.success) {
-    //                 fetchUserInfo();
-    //                 Alert.alert("Success", data.message);
-    //             } else {
-    //                 Alert.alert("Error", data.message);
-    //             }
-    //         } catch (error) {
-    //             Alert.alert("Lỗi", error.message);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     } else {
-    //         // Alert.alert("Đã hủy", "Bạn đã hủy chọn ảnh.");
-    //     }
-    // };
-
-    // const handleLogout = async () => {
-    //     Alert.alert(
-    //         "Xác nhận đăng xuất",
-    //         "Bạn có chắc chắn muốn đăng xuất?",
-    //         [
-    //             {
-    //                 text: "Hủy",
-    //             },
-    //             {
-    //                 text: "Đăng xuất",
-    //                 onPress: async () => {
-    //                     try {
-    //                         setLoading(true);
-    //                         const token = await getToken();
-    //                         if (token) {
-    //                             const data = await logout(token);
-
-    //                             if (data.success) {
-    //                                 deleteToken();
-    //                                 setUserInfo(null);
-    //                                 navigation.navigate("Auth", { screen: "Login" });
-    //                             }
-    //                         }
-    //                     } catch (error) {
-    //                         Alert.alert("Logout failed", "An error occurred. Please try again.");
-    //                     } finally {
-    //                         setLoading(false);
-    //                     }
-    //                 },
-    //             },
-    //         ],
-    //         { cancelable: false }
-    //     );
-    // };
-
-    // if (loading) {
-    //     return (
-    //         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    //             <StatusBar style="auto" />
-    //             <ActivityIndicator size="large" color="#16a34a" />
-    //         </View>
-    //     );
-    // }
+                                if (data.success) {
+                                    deleteToken();
+                                    setProfile(null);
+                                    navigation.navigate("Login");
+                                }
+                            }
+                        } catch (error) {
+                            showToast("error", "Đăng xuất thất bại!");
+                        } finally {
+                            setLoading(false);
+                        }
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    };
 
     return (
         <View className="flex-1 bg-gray-100">
             <StatusBar style="auto" />
+            {loading && <OverLoading />}
             {/* Background Section */}
             <View className="bg-green-600 h-36 w-full absolute top-0 left-0 right-0 z-[-1]" />
 
             {/* Profile Section */}
-            {userInfo ? (
+            {profile ? (
                 <>
                     <View className="flex-row bg-white rounded-lg p-5 mx-5 mt-20" style={styles.shadowStyle}>
                         <View className="relative">
-                            {userInfo.avatar ? (
+                            {profile.company.logo ? (
                                 <Image
                                     source={{
-                                        uri: userInfo.avatar,
+                                        uri: profile.company.logo,
                                     }}
                                     className="w-24 h-24 rounded-full border-2 border-green-600"
                                 />
@@ -160,19 +111,13 @@ const AccountTab = ({ navigation }) => {
                                     <Ionicons name="person-outline" size={48} color="#509b43" />
                                 </View>
                             )}
-                            <TouchableOpacity
-                                className="absolute right-0 bottom-0 bg-gray-600 rounded-full p-1 border-2 border-white"
-                                onPress={selectImage}
-                            >
-                                <Ionicons name="camera-outline" size={20} color="#fff" />
-                            </TouchableOpacity>
                         </View>
                         <View className="flex-1 ml-4">
-                            <Text className="text-lg font-bold text-gray-800 mb-1">{userInfo.fullName}</Text>
+                            <Text className="text-lg font-bold text-gray-800 mb-1">{profile.name}</Text>
                             <Text className="text-sm text-gray-600" numberOfLines={1} ellipsizeMode="tail">
-                                {userInfo.user.email}
+                                {profile.email}
                             </Text>
-                            {userInfo.user.active ? (
+                            {profile.active ? (
                                 <View className="flex-row items-center mt-2">
                                     <Octicons
                                         name="shield-check"
@@ -185,7 +130,7 @@ const AccountTab = ({ navigation }) => {
                             ) : (
                                 <TouchableOpacity
                                     onPress={() => {
-                                        navigation.navigate("ActivateAccount", { email: userInfo.email });
+                                        navigation.navigate("ActivateAccount", { email: profile.email });
                                     }}
                                 >
                                     <View className="flex-row items-center mt-2">
@@ -202,9 +147,9 @@ const AccountTab = ({ navigation }) => {
                         <TouchableOpacity
                             className="bg-white p-3 rounded-lg mb-4"
                             style={styles.shadowStyle}
-                            onPress={() => navigation.navigate("Profile", { user: userInfo })}
+                            onPress={() => navigation.navigate("Profile", { recruiter: profile })}
                         >
-                            <Text className="text-lg font-medium text-gray-800">Thông tin cá nhân</Text>
+                            <Text className="text-lg font-medium text-gray-800">Hồ sơ nhà tuyển dụng</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -237,35 +182,12 @@ const AccountTab = ({ navigation }) => {
                             <TouchableOpacity
                                 className="bg-green-600 p-3 rounded-lg justify-center items-center"
                                 onPress={() => {
-                                    navigation.navigate("Auth", { screen: "Login" });
+                                    navigation.navigate("Login");
                                 }}
                             >
                                 <Text className="text-lg font-medium text-white">Đăng nhập</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    {/* Options Section */}
-                    {/*có api rồi thì đem cái này lên trên thế cái kia*/}
-                    <View className="px-5 mt-10">
-                        <TouchableOpacity
-                            className="bg-white p-3 rounded-lg mb-4"
-                            style={styles.shadowStyle}
-                            onPress={() => navigation.navigate("Profile")}
-                        >
-                            <Text className="text-lg font-medium text-gray-800">Hồ sơ nhà tuyển dụng</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            className="bg-white p-3 rounded-lg mb-4"
-                            style={styles.shadowStyle}
-                            onPress={() => navigation.navigate("ChangePassword")}
-                        >
-                            <Text className="text-lg font-medium text-gray-800">Đổi mật khẩu</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity className="bg-white p-3 rounded-lg" style={styles.shadowStyle}>
-                            <Text className="text-lg font-medium text-red-600">Đăng xuất</Text>
-                        </TouchableOpacity>
                     </View>
                 </>
             )}
