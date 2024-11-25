@@ -3,6 +3,7 @@ import { View, ScrollView, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import JobPostCard from "../../components/card/JobPostCard";
+import EmptyCard from "../../components/card/EmptyCard";
 
 const PostListTab = ({ navigation }) => {
     // Mock data cho danh sách bài đăng
@@ -80,14 +81,20 @@ const PostListTab = ({ navigation }) => {
             <StatusBar style="auto" />
             {/* Nội dung tab */}
             <ScrollView className="flex-1 p-4">
-                {jobPosts.map((job) => (
-                    <JobPostCard
-                        key={job.id}
-                        job={job}
-                        onViewApplicants={() => handleViewApplicants(job.id)}
-                        onViewDetails={() => handleViewDetails(job)}
-                    />
-                ))}
+                {jobPosts.length > 0 ? (
+                    jobPosts.map((job) => (
+                        <JobPostCard
+                            key={job.id}
+                            job={job}
+                            onViewApplicants={() => handleViewApplicants(job.id)}
+                            onViewDetails={() => handleViewDetails(job)}
+                        />
+                    ))
+                ) : (
+                    <View className="h-[600px]">
+                        <EmptyCard />
+                    </View>
+                )}
             </ScrollView>
 
             {/* Button cố định */}
