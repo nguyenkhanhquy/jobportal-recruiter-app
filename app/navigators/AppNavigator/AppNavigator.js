@@ -10,6 +10,7 @@ import Profile from "../../screens/account/Profile";
 import CreateJobPost from "../../screens/post/CreateJobPost";
 import JobPostDetail from "../../screens/post/JobPostDetail";
 import UpdateJobPost from "../../screens/post/UpdateJobPost";
+import JobApplications from "../../screens/post/JobApplications";
 import MainTabNavigator from "../MainTabNavigator/MainTabNavigator";
 
 const Stack = createStackNavigator();
@@ -41,6 +42,11 @@ const AppNavigator = () => {
                     name="UpdateJobPost"
                     component={UpdateJobPost}
                     options={{ headerShown: true, headerTitle: "Chỉnh sửa bài đăng", headerTitleAlign: "center" }}
+                />
+                <Stack.Screen
+                    name="JobApplications"
+                    component={JobApplications}
+                    options={{ headerShown: true, headerTitle: "Danh sách ứng viên", headerTitleAlign: "center" }}
                 />
                 <Stack.Screen
                     name="ChangePassword"

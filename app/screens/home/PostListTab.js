@@ -69,7 +69,27 @@ const PostListTab = ({ navigation }) => {
     ];
 
     const handleViewApplicants = (jobId) => {
-        console.log(`Xem danh sách ứng viên cho job ID: ${jobId}`);
+        // Tự xử lý lại nhé, cái này gpt nó ghi tạm
+        const selectedJob = jobPosts.find((job) => job.id === jobId);
+        const applicants = [
+            {
+                id: 1,
+                name: "Nguyễn Văn A",
+                applyDate: "2024-11-20",
+                coverLetter: "Tôi rất quan tâm đến vị trí này và muốn đóng góp vào công ty.",
+            },
+            {
+                id: 2,
+                name: "Trần Thị B",
+                applyDate: "2024-11-22",
+                coverLetter: "Tôi có kinh nghiệm phù hợp và rất mong muốn làm việc tại công ty.",
+            },
+        ];
+
+        navigation.navigate("JobApplications", {
+            jobId: selectedJob.id,
+            applicants: applicants,
+        });
     };
 
     const handleViewDetails = (job) => {
