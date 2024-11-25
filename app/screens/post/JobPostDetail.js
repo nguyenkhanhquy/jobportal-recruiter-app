@@ -40,14 +40,8 @@ const JobPostDetail = ({ route, navigation }) => {
         return false;
     };
 
-    const handleUpdate = async () => {
-        navigation.navigate("JobApplication", { jobId: job.id });
-        // const token = await getToken();
-        // if (token) {
-        //     navigation.navigate("JobApplication", { jobId: job.id });
-        // } else {
-        //     showToast("info", "Vui lòng đăng nhập để ứng tuyển");
-        // }
+    const handleUpdate = () => {
+        navigation.navigate("UpdateJobPost", { job }); // Truyền dữ liệu job sang trang chỉnh sửa
     };
 
     return (

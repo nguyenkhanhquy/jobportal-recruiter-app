@@ -9,7 +9,7 @@ const PostListTab = ({ navigation }) => {
     const jobPosts = [
         {
             id: 1,
-            title: "Lập trình viên React Native",
+            title: "Lập trình viên React Native (lương tháng 20 củ , trợ cấp đầy đủ, lương tháng 13, bảo hiểm đầy đủ)",
             jobPosition: "React Native Developer",
             expiryDate: "2024-12-01",
             jobApplyCount: 12,
