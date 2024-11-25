@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Text, TextInput, View, TouchableOpacity, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { formatDate, convertDate } from "../../utils/dateUtil";
 
 const CreateJobPost = ({ navigation }) => {
     // Trạng thái lưu giá trị các trường
@@ -16,6 +18,14 @@ const CreateJobPost = ({ navigation }) => {
     const [benefits, setBenefits] = useState("");
     const [address, setAddress] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const handleDateChange = (event, selectedDate) => {
+        setShowDatePicker(false); // Ẩn picker sau khi chọn
+        if (selectedDate) {
+            setExpiryDate(convertDate(selectedDate)); // Lưu định dạng yyyy-mm-dd
+        }
+    };
 
     // Trạng thái lưu lỗi
     const [errors, setErrors] = useState({});
@@ -217,15 +227,25 @@ const CreateJobPost = ({ navigation }) => {
 
                 {/* Thời hạn ứng tuyển */}
                 <Text className="text-base font-bold mb-2">Thời hạn ứng tuyển</Text>
-                <View className="bg-white rounded-lg px-4 py-3 mb-2">
-                    <TextInput
-                        placeholder="Nhập thời hạn (yyyy-mm-dd)"
-                        value={expiryDate}
-                        onChangeText={setExpiryDate}
-                        className="text-base text-gray-700"
-                    />
-                </View>
+                <TouchableOpacity
+                    className="bg-white rounded-lg px-4 py-3 mb-2"
+                    onPress={() => setShowDatePicker(true)}
+                >
+                    <Text className={`text-base ${expiryDate ? "text-gray-700" : "text-gray-400"}`}>
+                        {expiryDate ? formatDate(expiryDate) : "Chọn thời hạn (dd/mm/yyyy)"}
+                    </Text>
+                </TouchableOpacity>
                 {errors.expiryDate && <Text className="text-red-500 mb-4">{errors.expiryDate}</Text>}
+
+                {showDatePicker && (
+                    <DateTimePicker
+                        value={expiryDate ? new Date(expiryDate) : new Date()} // Ngày mặc định
+                        mode="date"
+                        display="default"
+                        minimumDate={new Date()} // Chỉ cho phép ngày trong tương lai
+                        onChange={handleDateChange}
+                    />
+                )}
 
                 {/* Nút thêm bài đăng */}
                 <View className="flex-row justify-between gap-2 py-3 ">
