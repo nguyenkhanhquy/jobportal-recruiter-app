@@ -33,7 +33,19 @@ const MainTabNavigator = () => {
             })}
         >
             <Tab.Screen name="HomeTab" component={HomeTab} options={{ tabBarLabel: "Trang chủ" }} />
-            <Tab.Screen name="PostListTab" component={PostListTab} options={{ tabBarLabel: "Bài đăng" }} />
+            <Tab.Screen
+                name="PostListTab"
+                component={PostListTab}
+                options={{
+                    tabBarLabel: "Bài đăng",
+                    headerShown: true,
+                    headerTitle: "Danh sách bài đăng",
+                    headerStyle: {
+                        backgroundColor: "#16a34a",
+                    },
+                    headerTintColor: "#fff",
+                }}
+            />
             <Tab.Screen name="AccountTab" component={AccountTab} options={{ tabBarLabel: "Tài Khoản" }} />
         </Tab.Navigator>
     );
