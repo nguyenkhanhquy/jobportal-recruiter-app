@@ -3,7 +3,7 @@ import { Text, TextInput, View, TouchableOpacity, ScrollView } from "react-nativ
 import { StatusBar } from "expo-status-bar";
 import { Picker } from "@react-native-picker/picker";
 
-const CreateJobPostTab = () => {
+const CreateJobPost = ({ navigation }) => {
     // Trạng thái lưu giá trị các trường
     const [title, setTitle] = useState("");
     const [jobPosition, setJobPosition] = useState("");
@@ -78,21 +78,22 @@ const CreateJobPostTab = () => {
         if (validate()) {
             // Tạm thời chỉ reset form khi hợp lệ
             resetForm();
+            navigation.goBack();
         }
     };
 
     const handleCancel = () => {
         resetForm();
         setErrors({});
+        navigation.goBack();
     };
 
     return (
         <View className="flex-1 bg-gray-50">
             <StatusBar style="auto" />
-            <Text className="text-2xl font-bold mt-12 text-green-600 text-center">Đăng bài tuyển dụng</Text>
-            <ScrollView className="flex-1 mt-2 px-6">
+            <ScrollView className="flex-1 px-6">
                 {/* Tiêu đề */}
-                <Text className="text-base font-bold mb-2">Tiêu đề</Text>
+                <Text className="text-base font-bold mb-2 mt-2">Tiêu đề</Text>
                 <View className="bg-white rounded-lg px-4 py-3 mb-2">
                     <TextInput
                         placeholder="Nhập tiêu đề"
@@ -243,4 +244,4 @@ const CreateJobPostTab = () => {
     );
 };
 
-export default CreateJobPostTab;
+export default CreateJobPost;
