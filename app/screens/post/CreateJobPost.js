@@ -4,8 +4,13 @@ import { StatusBar } from "expo-status-bar";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { formatDate, convertDate } from "../../utils/dateUtil";
+import Toast from "react-native-toast-message";
+import OverlayLoading from "../../components/loaders/OverlayLoading";
+
+import { createJobPost } from "../../services/jobPostService";
 
 const CreateJobPost = ({ navigation }) => {
+    const [loading, setLoading] = useState(false);
     // Trạng thái lưu giá trị các trường
     const [title, setTitle] = useState("");
     const [jobPosition, setJobPosition] = useState("");
@@ -19,6 +24,19 @@ const CreateJobPost = ({ navigation }) => {
     const [address, setAddress] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const showToast = (type, text1, text2) => {
+        Toast.show({
+            type: type,
+            text1: text1,
+            text2: text2,
+            position: "bottom",
+            bottomOffset: 80,
+            visibilityTime: 3000,
+            text1Style: { fontSize: 16, fontWeight: "bold" },
+            text2Style: { fontSize: 12 },
+        });
+    };
 
     const handleDateChange = (event, selectedDate) => {
         setShowDatePicker(false); // Ẩn picker sau khi chọn
@@ -84,11 +102,31 @@ const CreateJobPost = ({ navigation }) => {
     };
 
     // Xử lý khi nhấn nút "Thêm bài đăng"
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (validate()) {
-            // Tạm thời chỉ reset form khi hợp lệ
-            resetForm();
-            navigation.goBack();
+            setLoading(true);
+            const jobPost = {
+                title,
+                jobPosition,
+                salary,
+                quantity: Number(quantity),
+                type,
+                remote,
+                description,
+                requirements,
+                benefits,
+                address,
+                expiryDate,
+            };
+            const data = await createJobPost(jobPost);
+            if (data.success) {
+                resetForm();
+                showToast("success", data.message);
+                navigation.goBack();
+            } else {
+                showToast("error", data.message);
+            }
+            setLoading(false);
         }
     };
 
@@ -101,6 +139,7 @@ const CreateJobPost = ({ navigation }) => {
     return (
         <View className="flex-1 bg-gray-50">
             <StatusBar style="auto" />
+            {loading && <OverlayLoading />}
             <ScrollView className="flex-1 px-6">
                 {/* Tiêu đề */}
                 <Text className="text-base font-bold mb-2 mt-2">Tiêu đề</Text>
@@ -156,8 +195,8 @@ const CreateJobPost = ({ navigation }) => {
                 <View className="bg-white rounded-lg   mb-2">
                     <Picker selectedValue={type} onValueChange={(itemValue) => setType(itemValue)}>
                         <Picker.Item label="Chọn loại hợp đồng" value="" />
-                        <Picker.Item label="Toàn thời gian" value="full-time" />
-                        <Picker.Item label="Bán thời gian" value="part-time" />
+                        <Picker.Item label="Toàn thời gian" value="Toàn thời gian" />
+                        <Picker.Item label="Bán thời gian" value="Bán thời gian" />
                     </Picker>
                 </View>
                 {errors.type && <Text className="text-red-500 mb-4">{errors.type}</Text>}
@@ -167,9 +206,9 @@ const CreateJobPost = ({ navigation }) => {
                 <View className="bg-white rounded-lg mb-2">
                     <Picker selectedValue={remote} onValueChange={(itemValue) => setRemote(itemValue)}>
                         <Picker.Item label="Chọn hình thức làm việc" value="" />
-                        <Picker.Item label="Trực tiếp" value="onsite" />
-                        <Picker.Item label="Làm từ xa" value="remote" />
-                        <Picker.Item label="Làm việc kết hợp" value="hybrid" />
+                        <Picker.Item label="Trực tiếp" value="Trực tiếp" />
+                        <Picker.Item label="Làm từ xa" value="Làm từ xa" />
+                        <Picker.Item label="Làm việc kết hợp" value="Làm việc kết hợp" />
                     </Picker>
                 </View>
                 {errors.remote && <Text className="text-red-500 mb-4">{errors.remote}</Text>}
@@ -232,7 +271,7 @@ const CreateJobPost = ({ navigation }) => {
                     onPress={() => setShowDatePicker(true)}
                 >
                     <Text className={`text-base ${expiryDate ? "text-gray-700" : "text-gray-400"}`}>
-                        {expiryDate ? formatDate(expiryDate) : "Chọn thời hạn (dd/mm/yyyy)"}
+                        {expiryDate ? formatDate(expiryDate) : "Chọn thời hạn"}
                     </Text>
                 </TouchableOpacity>
                 {errors.expiryDate && <Text className="text-red-500 mb-4">{errors.expiryDate}</Text>}
