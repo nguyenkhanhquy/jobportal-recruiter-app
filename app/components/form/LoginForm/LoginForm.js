@@ -70,7 +70,7 @@ const LoginForm = ({ navigation, setLoading }) => {
             if (data.success) {
                 if (data.result.role !== "RECRUITER") {
                     await logout(data.result.token);
-                    throw new Error("Loại tài khoản không hợp lệ!");
+                    throw new Error("Quyền tài khoản không hợp lệ!");
                 }
                 resetStates();
                 handleLoginResponse(data);

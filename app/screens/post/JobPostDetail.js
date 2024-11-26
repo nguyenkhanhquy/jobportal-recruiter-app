@@ -8,22 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { formatDate } from "../../utils/dateUtil";
 
 const JobPostDetail = ({ route, navigation }) => {
-    const [isPressed, setIsPressed] = useState(false);
-
     const { job } = route.params;
-
-    // const showToast = (type, text1, text2) => {
-    //     Toast.show({
-    //         type: type,
-    //         text1: text1,
-    //         text2: text2,
-    //         position: "bottom",
-    //         bottomOffset: 80,
-    //         visibilityTime: 3000,
-    //         text1Style: { fontSize: 16, fontWeight: "bold" },
-    //         text2Style: { fontSize: 12 },
-    //     });
-    // };
 
     const getExpiryStatus = (expiryDate) => {
         const today = new Date();

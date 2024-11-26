@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
+import { formatDate } from "../../utils/dateUtil";
+
 const JobPostCard = ({ job, onViewApplicants, onViewDetails }) => {
     return (
         <View className="bg-white shadow-lg rounded-lg p-4 mb-4">
@@ -11,7 +13,7 @@ const JobPostCard = ({ job, onViewApplicants, onViewDetails }) => {
             <Text className="text-sm text-gray-600 mb-1">Vị trí: {job.jobPosition}</Text>
 
             {/* Ngày hết hạn */}
-            <Text className="text-sm text-gray-600 mb-4">Hạn nộp: {job.expiryDate}</Text>
+            <Text className="text-sm text-gray-600 mb-4">Hạn nộp: {formatDate(job.expiryDate)}</Text>
 
             {/* Hồ sơ ứng tuyển */}
             <Text className="text-sm text-gray-600 mb-4">Hồ sơ ứng tuyển: {job.jobApplyCount} ứng viên</Text>
@@ -19,9 +21,15 @@ const JobPostCard = ({ job, onViewApplicants, onViewDetails }) => {
             {/* Các nút */}
             <View className="flex-row gap-2">
                 {/* Xem danh sách ứng viên */}
-                <TouchableOpacity className=" bg-green-600 rounded-md px-4 py-2 w-28" onPress={onViewApplicants}>
-                    <Text className="text-white font-bold text-sm text-center">Xem hồ sơ</Text>
-                </TouchableOpacity>
+                {job.jobApplyCount > 0 ? (
+                    <TouchableOpacity className="bg-green-600 rounded-md px-4 py-2 w-28" onPress={onViewApplicants}>
+                        <Text className="text-white font-bold text-sm text-center">Xem hồ sơ</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity disabled className="bg-gray-600 rounded-md px-4 py-2 w-30">
+                        <Text className="text-white font-bold text-sm text-center">Chưa có ứng viên</Text>
+                    </TouchableOpacity>
+                )}
 
                 {/* Chi tiết bài đăng */}
                 <TouchableOpacity className="border border-green-600 rounded-md px-4 py-2 w-20" onPress={onViewDetails}>

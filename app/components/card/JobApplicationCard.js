@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { formatDate } from "../../utils/dateUtil";
 
 const JobApplicationCard = ({ application, onViewCV }) => {
     return (
@@ -9,7 +10,7 @@ const JobApplicationCard = ({ application, onViewCV }) => {
             <Text className="text-lg font-bold text-gray-800 mb-2">{application.name}</Text>
 
             {/* Ngày ứng tuyển */}
-            <Text className="text-sm text-gray-600 mb-2">Ngày ứng tuyển: {application.applyDate}</Text>
+            <Text className="text-sm text-gray-600 mb-2">Ngày ứng tuyển: {formatDate(application.applyDate)}</Text>
 
             {/* Thư giới thiệu */}
             <Text className="text-sm text-gray-700 mb-4">Thư giới thiệu: {application.coverLetter}</Text>

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import EmptyCard from "../../components/card/EmptyCard";
 import JobApplicationCard from "../../components/card/JobApplicationCard";
