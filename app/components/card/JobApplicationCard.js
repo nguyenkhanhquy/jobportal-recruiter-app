@@ -16,7 +16,7 @@ const JobApplicationCard = ({ application, onViewCV }) => {
             <Text className="text-sm text-gray-700 mb-4">Thư giới thiệu: {application.coverLetter}</Text>
 
             {/* Nút xem CV */}
-            <TouchableOpacity className="flex-row items-center space-x-2  " onPress={onViewCV}>
+            <TouchableOpacity className="flex-row items-center space-x-2  " onPress={() => onViewCV(application.cv)}>
                 <Ionicons name="document-text-outline" size={24} color="#22c55e" />
                 <Text className="text-green-600 font-semibold text-base">Xem CV</Text>
             </TouchableOpacity>

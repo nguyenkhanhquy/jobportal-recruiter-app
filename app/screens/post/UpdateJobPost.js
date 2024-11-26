@@ -267,6 +267,7 @@ const UpdateJobPost = ({ route, navigation }) => {
                         placeholder="Nhập địa điểm"
                         value={address}
                         onChangeText={setAddress}
+                        multiline
                         className="text-base text-gray-700"
                     />
                 </View>
